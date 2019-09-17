@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<div *ngIf="pokemon$ | async as pokemon">
+  <div class="pokemon" *ngFor="let singlePokemon of pokemon">
+    <table>
+      <tr>
+        <th><img src="{{singlePokemon.imgUrl}}" title="{{singlePokemon.name | uppercase}}" (click)="this.showStats(singlePokemon.id)"></th>
+      </tr>
+  </table>
+  </div>
+</div>

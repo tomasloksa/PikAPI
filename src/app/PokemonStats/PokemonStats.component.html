@@ -1,0 +1,7 @@
+<div class="pokemonStats"
+     *ngIf="pokemonStats$ | async as pokemonStats">
+     <div>
+        <p>{{pokemonStats.id}}</p>
+        {{pokemonStats.hp}}
+     </div>
+</div>
