@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../pokemon.service';
 
 @Component({
-  selector: 'app-pokemonDetails',
+  selector: 'app-pokemon-details',
   templateUrl: './pokemonDetails.component.html',
   styleUrls: ['./pokemonDetails.component.css']
 })
@@ -13,19 +13,12 @@ export class PokemonDetailsComponent implements OnInit {
 
   public pokemon$;
 
-  ngOnInit()
-  {
+  ngOnInit() {
     this.pokemon$ = this.pokemonService.pokemon$;
+    this.showStats(1);
   }
 
-  showStats(id: number)
-  {
-    console.log(id);
+  showStats(id: number) {
     new PokemonStatsComponent(this.pokemonService).showStats(id);
   }
-
-
-
-
-
 }

@@ -1,27 +1,22 @@
 import { PokemonService } from './../pokemon.service';
 import { Component, OnInit } from '@angular/core';
-import { PokemonStats } from '../pokemonStats';
-import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-
+import { from, of } from 'rxjs';
 @Component({
-  selector: 'app-PokemonStats',
+  selector: 'app-pokemon-stats',
   templateUrl: './PokemonStats.component.html',
   styleUrls: ['./PokemonStats.component.css']
 })
 export class PokemonStatsComponent implements OnInit {
 
   public pokemonStats$;
-  // : Observable<PokemonStats>;
   constructor(private pokemonService: PokemonService) { }
 
   ngOnInit() {
+    this.pokemonStats$ = this.pokemonService.getPokemonStats(1);
   }
 
-  public showStats(id: number)
-  {
-    console.log(id);
-    this.pokemonStats$ = this.pokemonService.getPokemonStats(id);
-    console.log(this.pokemonStats$.subscribe(data => data.id));
+  public showStats(id: number) {
+    //this.pokemonStats$ = this.pokemonService.getPokemonStats(id);
   }
 }
