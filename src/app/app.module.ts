@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PokemonDetailsComponent } from './pokemonDetails/pokemonDetails.component';
-import { PokemonStatsComponent } from './PokemonStats/PokemonStats.component';
-import { PokemonFightComponent } from './pokemonFight/pokemonFight.component';
+import { PokemonStatsComponent } from './components/PokemonStats/PokemonStats.component';
+import { PokemonFightComponent } from './components/pokemonFight/pokemonFight.component';
+import { PokemonDetailsComponent } from './components/pokemonDetails/pokemonDetails.component';
 
 @NgModule({
    declarations: [

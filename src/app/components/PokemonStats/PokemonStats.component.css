@@ -1,0 +1,8 @@
+.pokemon-stats {
+  display: inline-block;
+  width: 110px;
+}
+
+.heading {
+  text-align: left;
+}

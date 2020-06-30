@@ -1,5 +1,6 @@
-import { PokemonStats } from '../models/pokemonStats';
 import { Component, OnInit } from '@angular/core';
+import { PokemonStats } from 'src/app/models/pokemonStats';
+import { PokemonStorageService } from 'src/app/services/pokemon-storage/pokemon-storage.service';
 
 @Component({
   selector: 'app-pokemon-fight',
@@ -8,13 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PokemonFightComponent implements OnInit {
 
-  constructor() { }
+  constructor(private storageService: PokemonStorageService) { }
+  choosePokemonText: string;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.choosePokemonText = 'Choose your pokemon';
+    this.storageService.setPokemon(20);
+    console.log('pod, prosim', this.storageService.getPokemon());
+  }
 
   fight(pokemon1: PokemonStats, pokemon2: PokemonStats): number {
     let attacker = pokemon1.speed > pokemon2.speed ? 1 : 2;
-    while (pokemon1.hp * pokemon2.hp >= 0) { // bojuju az kym jednemu z nich neklesne hp pod 0 
+    while (pokemon1.hp * pokemon2.hp >= 0) { // bojuju az kym jednemu z nich neklesne hp pod 0
       if (attacker === 1) {
         pokemon2.hp -= this.attack(pokemon1.attack, pokemon2.defense);
       } else {

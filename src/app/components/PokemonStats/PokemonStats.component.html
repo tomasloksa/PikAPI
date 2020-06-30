@@ -1,0 +1,11 @@
+<div *ngIf="pokemonStats$ | async as pokemonStats">
+  <table class="pokemon-stats" *ngFor="let singleStat of pokemonStats">
+    <tr>
+      <th class="heading"><p>{{singleStat.name}}</p></th>
+    </tr>
+    <tr>hp: {{singleStat.hp}}</tr>
+    <tr>speed: {{singleStat.speed}}</tr>
+    <tr>attack: {{singleStat.attack}}</tr>
+    <tr>defense: {{singleStat.defense}}</tr>
+  </table>
+</div>
