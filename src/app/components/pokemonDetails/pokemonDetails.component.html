@@ -2,7 +2,7 @@
   <div class="pokemon" *ngFor="let singlePokemon of pokemon">
     <table>
       <tr>
-        <th><img src="{{singlePokemon.imgUrl}}" title="{{singlePokemon.name | uppercase}}" (click)="this.showStats(singlePokemon.id)"></th>
+        <th><img src="{{singlePokemon.imgUrl}}" title="{{singlePokemon.name | uppercase}}" (click)="this.storageService.setPokemon(singlePokemon.id)"></th>
       </tr>
   </table>
   </div>

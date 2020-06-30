@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Pokemon } from '../../models/pokemon';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { take, map, tap } from 'rxjs/operators';
 import { PokemonStats } from '../../models/pokemonStats';
 import { PokemonAPI } from '../../models/api/pokemonAPI';
@@ -45,33 +45,29 @@ export class GetPokemonService {
   }
 
   getAllPokemonStats(ids: number[]): Observable<PokemonStats[]> {
-    const pokemonArray: PokemonStats[] = [];
-    ids.forEach(id => {
-      const url = 'https://pokeapi.co/api/v2/pokemon/' + id;
-      this.http.get(url)
-        .pipe(take(1))
-        .subscribe((data: PokemonStatsAPI) => {
-          pokemonArray.push({
-              id: data.id,
-              name: data.name,
-              speed: data.stats[0].base_stat,
-              hp: data.stats[5].base_stat,
-              attack: data.stats[4].base_stat,
-              defense: data.stats[3].base_stat
-            });
-        });
-    });
-
-    return of(pokemonArray);
+    return forkJoin(ids.map(id => {
+      return this.http.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    })).pipe(
+      map(results => results.map((data: PokemonStatsAPI) => ({
+        id: data.id,
+        name: data.name,
+        speed: data.stats[0].base_stat,
+        hp: data.stats[5].base_stat,
+        attack: data.stats[4].base_stat,
+        defense: data.stats[3].base_stat
+      }))),
+    );
   }
 
   getPokemonStats(id: number): any {
-    this.pokemonStats$
+    return this.pokemonStats$
     .pipe(take(1))
     .subscribe(stats => {
-      console.log('length', stats.length);
-      console.log('du', stats);
-      console.log('test', stats[1]);
+      for (const stat of stats) {
+        if (stat.id === id) {
+          return stat;
+        }
+      }
     });
   }
 }
