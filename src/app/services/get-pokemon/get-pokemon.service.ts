@@ -59,15 +59,17 @@ export class GetPokemonService {
     );
   }
 
-  getPokemonStats(id: number): any {
-    return this.pokemonStats$
-    .pipe(take(1))
+  getPokemonStats(id: number): PokemonStats {
+    let pokemonStat: PokemonStats;
+    this.pokemonStats$
     .subscribe(stats => {
       for (const stat of stats) {
+        console.log(id, stat);
         if (stat.id === id) {
-          return stat;
+          pokemonStat = stat;
         }
       }
     });
+    return pokemonStat;
   }
 }
