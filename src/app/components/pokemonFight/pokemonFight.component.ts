@@ -13,22 +13,24 @@ export class PokemonFightComponent implements OnInit {
 
   constructor(
     private storageService: PokemonStorageService,
-    private pokemonService: GetPokemonService
   ) { }
 
   choosePokemonText: string;
+  fightOverText: string;
   private firstPokemon: PokemonStats;
   private secondPokemon: PokemonStats;
 
   ngOnInit() {
-    this.choosePokemonText = 'Choose your pokemon';
+    this.choosePokemonText = 'Player 1 - Choose your pokemon';
     this.storageService.selected$.subscribe(stats => {
       if (stats) {
         if (!this.firstPokemon) {
           this.firstPokemon = stats;
+          this.choosePokemonText = 'Player 2 - Choose your pokemon';
         } else {
           this.secondPokemon = stats;
-          console.log(this.fight(this.firstPokemon, this.secondPokemon).name, 'WINS!');
+          this.choosePokemonText = this.firstPokemon.name + ' vs. ' + this.secondPokemon.name;
+          this.fightOverText = this.fight(this.firstPokemon, this.secondPokemon).name + ' WINS!';
         }
       }
     });
