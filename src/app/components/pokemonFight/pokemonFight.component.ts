@@ -13,23 +13,30 @@ export class PokemonFightComponent implements OnInit {
 
   constructor(
     private storageService: PokemonStorageService,
-    private pokemonService: GetPokemonService
-    ) { }
+  ) { }
+
   choosePokemonText: string;
+  fightOverText: string;
+  private firstPokemon: PokemonStats;
+  private secondPokemon: PokemonStats;
 
   ngOnInit() {
-    this.choosePokemonText = 'Choose your pokemon';
+    this.choosePokemonText = 'Player 1 - Choose your pokemon';
     this.storageService.selected$.subscribe(stats => {
       if (stats) {
-        let firstPokemon: PokemonStats;
-        let secondPokemon: PokemonStats;
-        this.pokemonService.pokemonStats$.pipe(take(1)).subscribe(x => secondPokemon = x[Math.floor(Math.random() * x.length )]);
-        console.log(this.fight(stats, secondPokemon));
+        if (!this.firstPokemon) {
+          this.firstPokemon = stats;
+          this.choosePokemonText = 'Player 2 - Choose your pokemon';
+        } else {
+          this.secondPokemon = stats;
+          this.choosePokemonText = this.firstPokemon.name + ' vs. ' + this.secondPokemon.name;
+          this.fightOverText = this.fight(this.firstPokemon, this.secondPokemon).name + ' WINS!';
+        }
       }
     });
   }
 
-  fight(pokemon1: PokemonStats, pokemon2: PokemonStats): number {
+  fight(pokemon1: PokemonStats, pokemon2: PokemonStats): PokemonStats {
     console.log('1', pokemon1);
     console.log('2', pokemon2);
     let attacker = pokemon1.speed > pokemon2.speed ? 1 : 2;
@@ -41,7 +48,7 @@ export class PokemonFightComponent implements OnInit {
       }
       attacker = attacker === 1 ? 2 : 1;
     }
-    return pokemon1.hp > 0 ? pokemon1.id : pokemon2.id;
+    return pokemon1.hp > 0 ? pokemon1 : pokemon2;
   }
 
   attack(attack: number, defense: number): number {

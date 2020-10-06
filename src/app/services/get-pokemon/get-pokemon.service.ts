@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Pokemon } from '../../models/pokemon';
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable, of, forkJoin, Subject } from 'rxjs';
 import { take, map, tap } from 'rxjs/operators';
 import { PokemonStats } from '../../models/pokemonStats';
 import { PokemonAPI } from '../../models/api/pokemonAPI';
@@ -59,17 +59,16 @@ export class GetPokemonService {
     );
   }
 
-  getPokemonStats(id: number): PokemonStats {
-    let pokemonStat: PokemonStats;
+  getPokemonStats(id: number): Observable<PokemonStats> {
+    let pokemonStat = new Subject<PokemonStats>();
     this.pokemonStats$
     .subscribe(stats => {
       for (const stat of stats) {
-        console.log(id, stat);
         if (stat.id === id) {
-          pokemonStat = stat;
+          pokemonStat.next(stat);
         }
       }
     });
-    return pokemonStat;
+    return pokemonStat.asObservable();
   }
 }
